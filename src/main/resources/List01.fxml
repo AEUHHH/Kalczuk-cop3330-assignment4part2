@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+
+<TableView fx:id="tableView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="389.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucf.assignments.Controller01">
+    <columns>
+        <TableColumn prefWidth="102.0" resizable="false" sortable="false">
+            <graphic>
+                <TextField fx:id="title" prefHeight="25.0" prefWidth="101.0" />
+            </graphic></TableColumn>
+        <TableColumn prefWidth="101.0">
+            <graphic>
+                <MenuButton maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Edit">
+                    <items>
+                        <Menu mnemonicParsing="false" text="Add">
+                            <items>
+                                <MenuItem mnemonicParsing="false" onAction="#addItemClicked" text="Item" />
+                                <MenuItem mnemonicParsing="false" onAction="#addListClicked" text="List" />
+                            </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Remove">
+                            <items>
+                                <MenuItem mnemonicParsing="false" onAction="#removeItemClicked" text="Item" />
+                                <MenuItem mnemonicParsing="false" onAction="#removeListClicked" text="List" />
+                            </items>
+                        </Menu>
+                    </items>
+                </MenuButton>
+            </graphic>
+        </TableColumn>
+        <TableColumn prefWidth="92.0">
+            <graphic>
+                <MenuButton maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="25.0" prefWidth="106.0" text="Settings">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#loadClicked" text="Load" />
+                        <MenuItem mnemonicParsing="false" onAction="#saveClicked" text="Save" />
+                    </items>
+                </MenuButton>
+            </graphic>
+        </TableColumn>
+        <TableColumn prefWidth="92.0">
+            <graphic>
+                <MenuButton maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="25.0" prefWidth="106.0" text="View">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#incompleteClicked" text="Incomplete Items" />
+                        <MenuItem mnemonicParsing="false" onAction="#completedClicked" text="Completed Items" />
+                    </items>
+                </MenuButton>
+            </graphic>
+        </TableColumn>
+    </columns>
+</TableView>
