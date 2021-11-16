@@ -1,4 +1,4 @@
-# Kalczuk-cop3330-assignment4part2# Instruction Manual for Simple To-Do List
+## Instruction Manual for Simple To-Do List
 
 
 
