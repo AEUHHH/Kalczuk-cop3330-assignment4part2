@@ -7,7 +7,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 /*
- *  UCF COP3330 Fall 2021 Assignment 4 Solution
+ *  UCF COP3330 Fall 2021 Assignment 4 Part 2 Solution
  *  Copyright 2021 Cody Kalczuk
  */
 
