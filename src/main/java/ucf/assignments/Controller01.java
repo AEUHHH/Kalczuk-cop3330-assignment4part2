@@ -103,7 +103,7 @@ public class Controller01 implements Initializable
                 sb.append(Arrays.toString(label));
                 System.out.println(sb);
 
-                //attaches values from file to list
+                //Attach values from file to list
                 for(int j = 0; j< label.length/2; j++){
                     LocalDate dueDate = LocalDate.parse(label[i+1]);
                     list.add(new LocalItem01(dueDate, label[i]));
