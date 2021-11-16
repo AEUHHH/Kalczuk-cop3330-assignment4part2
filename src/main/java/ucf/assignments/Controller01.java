@@ -1,26 +1,50 @@
 package ucf.assignments;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.fxml.Initializable;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.CheckBoxListCell;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import javafx.util.Callback;
+import java.io.*;
+import java.net.URL;
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.ResourceBundle;
 
 /*
  *  UCF COP3330 Fall 2021 Assignment 4 Part 2 Solution
  *  Copyright 2021 Cody Kalczuk
  */
 
-public class Controller01 {
+public class Controller01 implements Initializable
+{
 
-    @FXML
-    private TableView tableView;
 
-    @FXML
-    private TextField title;
+    public void initialize(URL url, ResourceBundle rb){
 
-    @FXML
-    public void loadClicked(ActionEvent actionEvent) {
-        loadList();
+        //initializing date
+        datePicker.setValue(LocalDate.now());
     }
+
+
+    @FXML
+    private ListView<LocalItem01> itemList;
+    @FXML
+    private TextField descriptionTextField;
+    @FXML
+    private DatePicker datePicker;
+    @FXML
+    private final FileChooser fileChooser = new FileChooser();
+
+    ObservableList<LocalItem01> list = FXCollections.observableArrayList();
+
+    @FXML
+    public void loadClicked(ActionEvent actionEvent) { loadList(); }
 
     @FXML
     public void saveClicked(ActionEvent actionEvent) {
@@ -38,17 +62,22 @@ public class Controller01 {
     }
 
     @FXML
-    public void removeItemClicked(ActionEvent actionEvent) {
+    public void removeClicked(ActionEvent actionEvent) {
         removeItem();
     }
 
     @FXML
-    public void removeListClicked(ActionEvent actionEvent) {
-        removeList();
+    public void clearClicked(ActionEvent actionEvent) {
+        clearList();
     }
 
     @FXML
-    public void incompleteClicked(ActionEvent actionEvent) {
+    public void updateClicked(ActionEvent actionEvent) {
+        updateItem();
+    }
+
+    @FXML
+    public void incompletedClicked(ActionEvent actionEvent) {
         displayIncompleteItems();
     }
 
@@ -57,46 +86,135 @@ public class Controller01 {
         displayCompleteItems();
     }
 
-    public void loadList(){
+
+    public void loadList() {
+
         //open file explorer for user to choose file
-        //read the file
-        //values from file are shown in the List
+        File opensFile = fileChooser.showOpenDialog(new Stage());
+
+        //reads file
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(opensFile));
+            String line;
+            int i =0;
+            StringBuilder sb = new StringBuilder();
+            while((line = reader.readLine()) != null){
+                String[] label = line.split(",");
+                sb.append(Arrays.toString(label));
+                System.out.println(sb);
+
+                //attaches values from file to list
+                for(int j = 0; j< label.length/2; j++){
+                    LocalDate dueDate = LocalDate.parse(label[i+1]);
+                    list.add(new LocalItem01(dueDate, label[i]));
+                    i= i+2;
+                }
+            }
+
+            //values from file are shown in To Do List
+            itemList.setItems(list);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void saveList(){
+    public void saveList() {
+
         //open up file explorer to choose directory of choosing
-        //save file into chosen directory with chosen filename
+        File savesFile = fileChooser.showSaveDialog(new Stage());
+
+        //saves file into chosen directory with chosen filename
+        try {
+            PrintWriter printWriter = new PrintWriter(savesFile);
+            printWriter.write(String.valueOf(list).replace("[", "").replace("]", ""));
+            printWriter.close();
+        }catch(FileNotFoundException e){
+            e.printStackTrace();
+        }
     }
 
     public void addItem(){
-        //get value from description text field and calendar
-        //add value to list
-        //then add checkbox next to items
+
+        //get values from description text field and calendar
+        list.add(new LocalItem01(datePicker.getValue(), descriptionTextField.getText()));
+
+        //add values to list
+        itemList.setItems(list);
+
+
+        //adding checkbox next to items
+        itemList.setCellFactory(CheckBoxListCell.forListView(new Callback<LocalItem01, ObservableValue<Boolean>>() {
+            @Override
+            public ObservableValue<Boolean> call(LocalItem01 param) {
+                return null;
+            }
+        }));
+
+    }
+    public void updateItem(){
+
+        //when user clicks on list item, text will be sent into description field for editing
+        int i = 0;
+        itemList.setOnMouseClicked(e -> {
+            String selectedItem = itemList.getSelectionModel().getSelectedItem().toString();
+            int selectID = itemList.getSelectionModel().getSelectedIndex();
+            descriptionTextField.setText(selectedItem);
+
+            selectID = i;
+        });
+
+
+        //update edited item
+        itemList.getItems().remove(i);
+        itemList.getItems().add(i, new Update01(descriptionTextField.getText()));
+
+
     }
 
     public void addList(){
+
         //open a new list in a new window
-        //recall application launch everytime button "New List" is clicked and handles exception
+        String[] args = new String[0];
+        List01 opensList = new List01();
+
+        //recalls application launch everytime button "New List" is clicked and handles exception
+        try{
+            opensList.start(new Stage());
+            List01.main(args);
+        }catch(IllegalStateException e){
+            System.out.println("");
+        }
+
     }
+
 
     public void removeItem(){
+
         //assign an id to each row of text within table for accessing
-        //Access and remove row of item from table with id
+        int selectID = itemList.getSelectionModel().getSelectedIndex();
+
+        //using id, access and remove row of item from table
+        itemList.getItems().remove(selectID);
+
     }
 
-    public void removeList(){
-        //delete To Do list page
-        //if only one page, delete all items within that page
-    }
+    public void clearList(){
 
-    public void displayIncompleteItems(){
-        //check all items that don't have a complete status
-        //hide complete items
+        //clear all items from list
+        itemList.getItems().clear();
     }
 
     public void displayCompleteItems(){
-        //check all that items have a complete status
-        //hide incomplete items
+
+        //display only checked boxes
+
+    }
+
+    public void displayIncompleteItems(){
+
+        //display incomplete items
+
     }
 
 }
