@@ -1,10 +1,4 @@
 package ucf.assignments;
-
-/*
- *  UCF COP3330 Fall 2021 Assignment 4 Part 2 Solution
- *  Copyright 2021 Cody Kalczuk
-*/
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.junit.jupiter.api.Test;
@@ -12,7 +6,12 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-class ListControllerTest {
+/*
+ *  UCF COP3330 Fall 2021 Assignment 4 Part 2 Solution
+ *  Copyright 2021 Cody Kalczuk
+*/
+
+class TestController01 {
 
     ObservableList<Object> check = FXCollections.observableArrayList();
 

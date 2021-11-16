@@ -9,30 +9,59 @@ class List{
 
 class ListController{
 
-    -tableView : TableView
-    -title: TextField
+    -TextField: descriptionTextField
+    -DatePicker: datePicker
+    -FileChooser: fileChooser
+    ObservableList<LocalItem>:  list
 
+    + initialize()
     + loadClicked()
     + saveClicked()
     + addItemClicked()
     + addListClicked()
-    + removeItemClicked()
-    + removeListClicked()
+    + removeClicked()
+    + clearClicked()
+    + updateCLicked()
     + incompletedClicked()
     + completedClicked()
     + loadList()
     + saveList()
     + addItem()
+    + updateItem()
     + addList()
     + removeItem()
-    + removeList()
-    + displayIncompleteItems()
+    + clearList()
     + displayCompleteItems()
-}
+    + displayIncompleteItems()
 
+}
+class LocalItem{
+
+    - String: description
+    - LocalDate: date
+
+    + getDescription()
+    + setDescription()
+    + getDate()
+    + setDate()
+    + LocalItem()
+    + toString()
+
+}
+class Update{
+     - String: description
+
+     + getDescription()
+     + setDescription()
+     + Update()
+     + toString()
+}
 
 javafx.Application <|-- List
 
-List - ListController
+List <- ListController
+ListController - Update
+ListController - LocalItem
+
 
 @enduml
